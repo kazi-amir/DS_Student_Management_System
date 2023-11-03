@@ -8,11 +8,13 @@ using namespace std;
 
 #define int long long
 
+/*Structure type data for holding course information*/
 typedef struct courses{
     string code, name;
     struct courses *next;
 }courses;
 
+/*structure type data to hold Student's information. Including his assignes courses*/
 typedef struct students{
     string ID, name, email, phone;
     int courseNum;
@@ -27,11 +29,14 @@ void landing();
 void exitProgram();
 void addNew();
 bool exists(string SID, string type, string ID);
+void SearchByID();
+void returnMenu();
+void slowTxt(string s);
 
 
 signed main(){
     while(true){
-        system("cls");
+        system("cls"); //Cleares previous output
         landing();
         int ope;
         cin>>ope;
@@ -42,18 +47,16 @@ signed main(){
             case 1:
                 addNew();
                 break;
+            case 2:
+                SearchByID();
+                break;
             case 7:
                 display();
                 break;
 
             default:
-                system("cls");
-                string invalid = "Invalid Choise...";
-                cout<<"\t";
-                for(auto it : invalid){
-                    cout<<it;
-                    Sleep(80);
-                }
+                string invalid = "\n\tInvalid Choise...";
+                slowTxt(invalid);
                 Sleep(300);
                 break;
         }
@@ -61,20 +64,68 @@ signed main(){
 }
 
 void landing(){
-    cout<<"\n\n     **Student Management System**"<<endl<<endl; Sleep(30);
-    cout<<"\t\tMain Menu"<<endl; Sleep(30);
-    cout<<"     *****************************"<<endl; Sleep(30);
-    cout<<"\t[1] Add new Student."<<endl; Sleep(30);
-    cout<<"\t[2] Search a Student."<<endl; Sleep(30);
-    cout<<"\t[3] Show all Student."<<endl; Sleep(30);
-    cout<<"\t[4] Delete Student."<<endl; Sleep(30);
-    cout<<"\t[5] Delete all Student."<<endl; Sleep(30);
-    cout<<"\t[6] About Us"<<endl; Sleep(30);
-    cout<<"\t[7] Display All Students"<<endl; Sleep(30);
-    cout<<"\t[0] Exit the Program."<<endl; Sleep(30);
-    cout<<"     *****************************"<<endl; Sleep(30);
+    cout<<"\n\n";
+    cout<<"   ****Student Management System****"<<endl<<endl; Sleep(10);
+    cout<<"\t\tMain Menu"<<endl; Sleep(10);
+    cout<<"     *****************************"<<endl; Sleep(10);
+    cout<<"\t[1] Add new Student."<<endl; Sleep(10);
+    cout<<"\t[2] Search a Student."<<endl; Sleep(10);
+    cout<<"\t[3] Show all Student."<<endl; Sleep(10);
+    cout<<"\t[4] Delete Student."<<endl; Sleep(10);
+    cout<<"\t[5] Delete all Student."<<endl; Sleep(10);
+    cout<<"\t[6] About Us"<<endl; Sleep(10);
+    cout<<"\t[7] Display All Students"<<endl; Sleep(10);
+    cout<<"\t[0] Exit the Program."<<endl; Sleep(10);
+    cout<<"     *****************************"<<endl; Sleep(10);
     cout<<"\tEnter your Choise: ";
 
+}
+
+
+void slowTxt(string s){
+    system("cls");
+    cout<<"\n\n"<<endl;
+    cout<<"\t";
+    for(auto it : s){
+        cout<<it;
+        Sleep(20);
+    }
+    cout<<"\n\n";
+}
+
+void SearchByID(){
+    string s = "To search a student, please Enter following information. ";
+    slowTxt(s);
+    cout<<"\tStident ID: ";
+    string ID;
+    cin>>ID;
+    students *st = start;
+    bool found = false;
+    while(st!=NULL){
+        if(st->ID==ID){
+            system("cls");
+            cout<<"\tStudent ID: "<<st->ID<<endl;
+            cout<<"\tName: "<<st->name<<endl;
+            cout<<"\tPhone: "<<st->phone<<endl;
+            cout<<"\tE-mail: "<<st->email<<endl;
+            cout<<"\tEnrolled courses: "<<endl;
+            courses *q = st->course;
+            int c = 1;
+            while(q!=NULL){
+                cout<<"\t\tCourse-"<<c<<": "<<endl;
+                cout<<"\t\t\tCourse Name: "<<q->name<<endl;
+                cout<<"\t\t\tCourse Code: "<<q->code<<endl;
+                c++;
+                q = q->next;
+            }
+            found = true;
+        }
+        st = st->next;
+    }
+    if(found==false){
+        slowTxt("Student Information can not be found.");
+    }
+    returnMenu();
 }
 
 bool exists(string tocmp, string type, string ID){
@@ -116,12 +167,7 @@ void addNew(){
     system("cls");
     cout<<"\n\n"<<endl;
     string s = "You wanted to add a new student. \n\tPlease enter his/her detailed information";
-    cout<<"\t";
-    for(auto it : s){
-        cout<<it;
-        Sleep(30);
-    }
-    cout<<"\n\n";
+    slowTxt(s);
 
     cin.ignore();
     while(!valid){
@@ -270,12 +316,13 @@ void addNew(){
 }
 
 void display(){
-    cout<<"\n\tViewing All the Student Information: "<<endl;
+    string s = "Viewing All the Student Information: ";
+    slowTxt(s);
     students *p = start;
     int st = 0;
     while(p!=NULL){
         st++;
-        cout<<"\n\t*****Student-"<<st<<"*****"<<endl;
+        cout<<"\n\t*****Student-"; if(st<10){cout<<"0";}cout<<st<<"*****"<<endl;
         cout<<"\tStudent ID: "<<p->ID<<endl;
         cout<<"\tName: "<<p->name<<endl;
         cout<<"\tPhone: "<<p->phone<<endl;
@@ -292,6 +339,10 @@ void display(){
         }
         p = p->next;
     }
+    returnMenu();
+}
+
+void returnMenu(){
     cout<<"\n\tTo return Main menu[M]\n\tTo Close the Programme[0]\n\tEnter yout choise: ";
     char x;
     cin>>x;
@@ -301,14 +352,8 @@ void display(){
 }
 
 void exitProgram(){
-    system("cls");
-    cout<<"\n"<<endl;
-    string thank = "\tThank Your for using our service...";
-    for(auto it : thank){
-        cout<<it;
-        Sleep(80);
-    }
-    cout<<"\n";
-    Sleep(300);
+    string thank = "Thank Your for using our service...";
+    slowTxt(thank);
+    Sleep(500);
     exit(0);
 }
