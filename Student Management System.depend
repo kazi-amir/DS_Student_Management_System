@@ -1,9 +1,0 @@
-# depslib dependency file v1.0
-1699013241 source:g:\data structure project\student management system\main.cpp
-	<bits/stdc++.h>
-	<windows.h>
-	<unistd.h>
-	<stdlib.h>
-	<string.h>
-	<iostream>
-
